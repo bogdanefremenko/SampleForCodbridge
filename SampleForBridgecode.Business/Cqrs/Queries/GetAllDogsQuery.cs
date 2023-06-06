@@ -7,9 +7,9 @@ using SampleForCodebridge.Data;
 
 namespace SampleForBridgecode.Business.Cqrs.Queries;
 
-public record GetAllDogsQuery(string? Attribute, string? Order) : IRequest<List<Dog>>;
+public record GetAllDogsQuery(string? Attribute, string? Order, int PageNumber = 1, int PageSize = 10) : IRequest<object>;
 
-internal class GetAllDogsQueryHandler : IRequestHandler<GetAllDogsQuery, List<Dog>>
+internal class GetAllDogsQueryHandler : IRequestHandler<GetAllDogsQuery, object>
 {
 	private readonly DatabaseContext _context;
 
@@ -18,7 +18,7 @@ internal class GetAllDogsQueryHandler : IRequestHandler<GetAllDogsQuery, List<Do
 		_context = context;
 	}
 
-	public async Task<List<Dog>> Handle(GetAllDogsQuery request, CancellationToken cancellationToken)
+	public async Task<object> Handle(GetAllDogsQuery request, CancellationToken cancellationToken)
 	{
 		IQueryable<Dog> query = _context.Dogs;
 
@@ -35,7 +35,9 @@ internal class GetAllDogsQueryHandler : IRequestHandler<GetAllDogsQuery, List<Do
 			"weight" => isDescending ? query.OrderByDescending(d => d.Weight) : query.OrderBy(d => d.Weight),
 			_ => throw new ArgumentException("Invalid attribute.")
 		};
-
-		return query.ToList();
+		
+		var dogs = query.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize).ToList();
+		
+		return dogs;
 	}
 }

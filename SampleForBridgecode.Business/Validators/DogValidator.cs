@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
-using SampleForBridgecode.Business.Cqrs.Commands;
 using SampleForCodebridge.Core.Models;
-using SampleForCodebridge.Data;
 
 namespace SampleForBridgecode.Business.Validators;
 

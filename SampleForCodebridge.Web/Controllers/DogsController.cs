@@ -17,22 +17,12 @@ public class DogsController : ControllerBase
 	}
 
 	[HttpGet("/dogs")]
-	public async Task<IActionResult> Index([FromQuery] string? attribute, [FromQuery] string? order, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+	public async Task<IActionResult> Index([FromQuery] string? attribute, [FromQuery] string? order, [FromQuery] int pageNumber, [FromQuery] int pageSize)
 	{
-		var dogs = await _mediator.Send(new GetAllDogsQuery(attribute, order));
-
-		dogs = dogs.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-
-		var result = new
-		{
-			TotalItems = dogs.Count,
-			PageNumber = pageNumber,
-			PageSize = pageSize,
-			Dogs = dogs
-		};
+		var result = await _mediator.Send(new GetAllDogsQuery(attribute, order, pageNumber, pageSize));
 		return Ok(result);
 	}
-
+	
 	[HttpPost("/dog")]
 	public async Task<IActionResult> Index([FromBody] Dog dog)
 	{
@@ -40,14 +30,10 @@ public class DogsController : ControllerBase
 		return CreatedAtAction(nameof(GetDog), new { id = dog.Id }, dog);
 	}
 
-	[HttpGet("/dogs/{id}")]
+	[HttpGet("/dog/{id:int}")]
 	public async Task<ActionResult<Dog>> GetDog(int id)
 	{
 		var dog = await _mediator.Send(new SearchDogByIdQuery(id));
-
-		if (dog == null)
-			return NotFound();
-
 		return Ok(dog);
 	}
 }

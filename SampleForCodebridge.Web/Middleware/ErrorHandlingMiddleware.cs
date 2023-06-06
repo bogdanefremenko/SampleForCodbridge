@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Newtonsoft.Json;
 
 namespace SampleForCodebridge.Web.Middleware;
@@ -42,23 +41,12 @@ public class ErrorHandlingMiddleware
 				message = exception.Message;
 				break;
 
-			// case ValidationException validationException when validationException.ErrorCode == "InvalidInput":
-			// 	statusCode = HttpStatusCode.BadRequest;
-			// 	message = "Invalid input: " + validationException.Message;
-			// 	break;
-			//
-			// case ValidationException validationException when validationException.ErrorCode == "AccessDenied":
-			// 	statusCode = HttpStatusCode.Forbidden;
-			// 	message = "Access denied: " + validationException.Message;
-			// 	break;
-
 			default:
 				statusCode = HttpStatusCode.InternalServerError;
 				message = "Internal Server Error. " + exception.Message;
 				break;
 		}
-
-
+		
 		var result = JsonConvert.SerializeObject(new { error = message });
 		context.Response.ContentType = "application/json";
 		context.Response.StatusCode = (int)statusCode;

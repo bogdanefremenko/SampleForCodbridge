@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 using SampleForBridgecode.Business.Validators;
@@ -13,17 +14,18 @@ public record AddDogCommand(Dog Dog) : IRequest;
 internal class AddDogCommandHandler : IRequestHandler<AddDogCommand>
 {
 	private readonly DatabaseContext _context;
+	private readonly IValidator<Dog> _validator;
 
-	public AddDogCommandHandler(DatabaseContext context)
+	public AddDogCommandHandler(DatabaseContext context, IValidator<Dog> validator)
 	{
 		_context = context;
+		_validator = validator;
 	}
 
 	
 	public async Task Handle(AddDogCommand request, CancellationToken cancellationToken)
 	{
-		var validator = new DogValidator();
-		var results = await validator.ValidateAsync(request.Dog, cancellationToken);
+		var results = await _validator.ValidateAsync(request.Dog, cancellationToken);
 
 		if (results.IsValid)
 		{

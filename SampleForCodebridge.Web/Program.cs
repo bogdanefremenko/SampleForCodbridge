@@ -13,9 +13,7 @@ builder.Services.AddBusiness();
 
 var app = builder.Build();
 
-//if(app.Environment.IsDevelopment())
-
 app.UseMiddleware<ErrorHandlingMiddleware>();
-app.UseRouting();//?
+
 app.MapControllers();
 app.Run();

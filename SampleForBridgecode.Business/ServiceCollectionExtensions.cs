@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SampleForBridgecode.Business.Validators;
+using FluentValidation;
 
 namespace SampleForBridgecode.Business;
 
@@ -6,6 +8,8 @@ public static class ServiceCollectionExtensions
 {
 	public static IServiceCollection AddBusiness(this IServiceCollection services)
 	{
-		return services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(ServiceCollectionExtensions).Assembly));
+		services.AddValidatorsFromAssemblyContaining<DogValidator>();
+		services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(ServiceCollectionExtensions).Assembly));
+		return services;
 	}
 }
