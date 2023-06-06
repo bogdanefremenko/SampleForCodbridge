@@ -20,14 +20,12 @@ public class DogsController : ControllerBase
 	public async Task<IActionResult> Index([FromQuery] string? attribute, [FromQuery] string? order, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
 	{
 		var dogs = await _mediator.Send(new GetAllDogsQuery(attribute, order));
-		
-		var totalItems = dogs.Count;
-		//some errors
+
 		dogs = dogs.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
 		var result = new
 		{
-			TotalItems = totalItems,
+			TotalItems = dogs.Count,
 			PageNumber = pageNumber,
 			PageSize = pageSize,
 			Dogs = dogs
@@ -38,15 +36,8 @@ public class DogsController : ControllerBase
 	[HttpPost("/dog")]
 	public async Task<IActionResult> Index([FromBody] Dog dog)
 	{
-		try
-		{
-			await _mediator.Send(new AddDogCommand(dog));
-			return CreatedAtAction(nameof(GetDog), new { id = dog.Id }, dog);
-		}
-		catch
-		{
-			return StatusCode(500, "An error occurred while creating the dog.");
-		}
+		await _mediator.Send(new AddDogCommand(dog));
+		return CreatedAtAction(nameof(GetDog), new { id = dog.Id }, dog);
 	}
 
 	[HttpGet("/dogs/{id}")]

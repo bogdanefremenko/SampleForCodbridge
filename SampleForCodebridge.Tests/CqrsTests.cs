@@ -64,19 +64,17 @@ public class CqrsTests : IClassFixture<TestDatabaseFixture>
 		var handler = new SearchDogByIdQueryHandler(context);
 
 		context.Dogs.AddRange(
-			new Dog { Name = "Dog 1", Color = "Brown", TailLength = 10, Weight = 20 },
-			new Dog { Name = "Dog 2", Color = "Black", TailLength = 15, Weight = 25 }
+			new Dog { Name = "Lili", Color = "Brown", TailLength = 10, Weight = 20 },
+			new Dog { Name = "Leya", Color = "Black", TailLength = 15, Weight = 25 }
 		);
 		await context.SaveChangesAsync();
 
 		var query = new SearchDogByIdQuery(2);
 
-		// Act
 		var result = await handler.Handle(query, CancellationToken.None);
 
-		// Assert
 		Assert.NotNull(result);
-		Assert.Equal("Dog 2", result.Name);
+		Assert.Equal("Leya", result.Name);
 		await context.Database.EnsureDeletedAsync();
 	}
 }

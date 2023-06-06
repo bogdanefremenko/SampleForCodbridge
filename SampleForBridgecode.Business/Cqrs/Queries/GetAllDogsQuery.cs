@@ -4,6 +4,7 @@ using SampleForCodebridge.Core.Models;
 using SampleForCodebridge.Data;
 
 [assembly: InternalsVisibleTo("SampleForCodebridge.Tests")]
+
 namespace SampleForBridgecode.Business.Cqrs.Queries;
 
 public record GetAllDogsQuery(string? Attribute, string? Order) : IRequest<List<Dog>>;
@@ -21,8 +22,11 @@ internal class GetAllDogsQueryHandler : IRequestHandler<GetAllDogsQuery, List<Do
 	{
 		IQueryable<Dog> query = _context.Dogs;
 
-		if (string.IsNullOrEmpty(request.Attribute)) return query.ToList();
+		if (string.IsNullOrEmpty(request.Attribute))
+			return query.ToList();
+
 		var isDescending = string.Equals(request.Order, "desc", StringComparison.OrdinalIgnoreCase);
+
 		query = request.Attribute.ToLower() switch
 		{
 			"name" => isDescending ? query.OrderByDescending(d => d.Name) : query.OrderBy(d => d.Name),

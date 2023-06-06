@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using FluentValidation.Results;
 using MediatR;
 using SampleForBridgecode.Business.Validators;
 using SampleForCodebridge.Core.Models;
@@ -31,10 +32,8 @@ internal class AddDogCommandHandler : IRequestHandler<AddDogCommand>
 			return;
 		}
 
-		//TODO: convert into codes
-		foreach (var failure in results.Errors)
-		{
-			Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
-		}
+		var exceptionString = results.Errors.Aggregate<ValidationFailure?, string>(default!, (current, failure) => current + ("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage + "\n"));
+
+		throw new ArgumentException(exceptionString);
 	}
 }

@@ -1,8 +1,7 @@
-
-
 using Microsoft.EntityFrameworkCore;
 using SampleForBridgecode.Business;
 using SampleForCodebridge.Data;
+using SampleForCodebridge.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,5 +13,9 @@ builder.Services.AddBusiness();
 
 var app = builder.Build();
 
+//if(app.Environment.IsDevelopment())
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseRouting();//?
 app.MapControllers();
 app.Run();
