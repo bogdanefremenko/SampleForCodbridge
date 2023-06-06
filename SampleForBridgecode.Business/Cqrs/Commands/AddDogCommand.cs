@@ -2,6 +2,7 @@
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SampleForBridgecode.Business.Validators;
 using SampleForCodebridge.Core.Models;
 using SampleForCodebridge.Data;
@@ -22,20 +23,14 @@ internal class AddDogCommandHandler : IRequestHandler<AddDogCommand>
 		_validator = validator;
 	}
 
-	
 	public async Task Handle(AddDogCommand request, CancellationToken cancellationToken)
 	{
 		var results = await _validator.ValidateAsync(request.Dog, cancellationToken);
-
-		if (results.IsValid)
-		{
-			_context.Set<Dog>().Add(request.Dog);
-			await _context.SaveChangesAsync(cancellationToken);
-			return;
-		}
-
-		var exceptionString = results.Errors.Aggregate<ValidationFailure?, string>(default!, (current, failure) => current + ("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage + "\n"));
-
-		throw new ArgumentException(exceptionString);
+		if (await _context.Dogs.AnyAsync(d => d.Name == request.Dog.Name, cancellationToken: cancellationToken))
+			throw new ArgumentException("There is a dog with this name");
+		if (!results.IsValid)
+			throw new ValidationException(results.Errors);
+		_context.Dogs.Add(request.Dog);
+		await _context.SaveChangesAsync(cancellationToken);
 	}
 }

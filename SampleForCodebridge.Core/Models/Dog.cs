@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 
 namespace SampleForCodebridge.Core.Models;
 
-[Index(nameof(Dog.Name), IsUnique = true)]
 public class Dog
 {
 	[Key] 
@@ -17,7 +15,7 @@ public class Dog
 	[MaxLength(50)] 
 	public string Color { get; set; } = null!;
 
-	[Required] 
+	[Required]
 	public int TailLength { get; set; }
 
 	[Required] 

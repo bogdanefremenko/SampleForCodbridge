@@ -9,7 +9,7 @@ public class DogValidator : AbstractValidator<Dog>
 	{
 		RuleFor(dog => dog.Name ).NotNull().NotEmpty().Length(0, 50);
 		RuleFor(dog => dog.Color ).NotNull().NotEmpty().Length(0, 50);
-		RuleFor(dog => dog.TailLength );
-		RuleFor(dog => dog.Weight );
+		RuleFor(dog => dog.TailLength ).GreaterThan(0).LessThan(200);
+		RuleFor(dog => dog.Weight ).GreaterThan(0).LessThan(200);
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using FluentValidation;
 using Newtonsoft.Json;
 
 namespace SampleForCodebridge.Web.Middleware;
@@ -38,6 +39,11 @@ public class ErrorHandlingMiddleware
 			
 			case ArgumentException:
 				statusCode = HttpStatusCode.Conflict;
+				message = exception.Message;
+				break;
+			
+			case ValidationException:
+				statusCode = HttpStatusCode.BadRequest;
 				message = exception.Message;
 				break;
 
