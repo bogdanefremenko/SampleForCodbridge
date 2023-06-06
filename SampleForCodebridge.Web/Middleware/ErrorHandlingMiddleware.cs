@@ -54,7 +54,7 @@ public class ErrorHandlingMiddleware
 
 			default:
 				statusCode = HttpStatusCode.InternalServerError;
-				message = "Internal Server Error";
+				message = "Internal Server Error. " + exception.Message;
 				break;
 		}
 

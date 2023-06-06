@@ -20,6 +20,9 @@ internal class SearchDogByIdQueryHandler : IRequestHandler<SearchDogByIdQuery, D
 
 	public async Task<Dog?> Handle(SearchDogByIdQuery request, CancellationToken cancellationToken)
 	{
-		return await _context.Dogs.Where(x => x.Id == request.Id).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+		var result = await _context.Dogs.Where(x => x.Id == request.Id).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+		if (result is null)
+			throw new ArgumentException("There isn't any dog with Id: " + request.Id);
+		return result;
 	}
 }
