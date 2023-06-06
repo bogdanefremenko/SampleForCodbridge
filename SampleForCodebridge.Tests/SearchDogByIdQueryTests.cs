@@ -1,5 +1,4 @@
 ﻿using SampleForBridgecode.Business.Cqrs.Queries;
-using SampleForCodebridge.Core.Models;
 
 namespace SampleForCodebridge.Tests;
 

@@ -17,7 +17,7 @@ public class DogsController : ControllerBase
 	}
 
 	[HttpGet("/dogs")]
-	public async Task<IActionResult> Index([FromQuery] string? attribute, [FromQuery] string? order, [FromQuery] int pageNumber, [FromQuery] int pageSize)
+	public async Task<IActionResult> Index([FromQuery] string? attribute, [FromQuery] string? order, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
 	{
 		var result = await _mediator.Send(new GetAllDogsQuery(attribute, order, pageNumber, pageSize));
 		return Ok(result);

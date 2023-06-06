@@ -1,6 +1,5 @@
 ﻿using SampleForBridgecode.Business.Cqrs.Commands;
 using SampleForBridgecode.Business.Validators;
-using SampleForCodebridge.Core.Models;
 
 namespace SampleForCodebridge.Tests;
 

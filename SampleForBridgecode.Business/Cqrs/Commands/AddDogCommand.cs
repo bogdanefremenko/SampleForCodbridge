@@ -1,9 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using FluentValidation;
-using FluentValidation.Results;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SampleForBridgecode.Business.Validators;
 using SampleForCodebridge.Core.Models;
 using SampleForCodebridge.Data;
 

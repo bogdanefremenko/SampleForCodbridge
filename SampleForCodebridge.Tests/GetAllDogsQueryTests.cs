@@ -1,5 +1,4 @@
 ﻿using SampleForBridgecode.Business.Cqrs.Queries;
-using SampleForCodebridge.Core.Models;
 
 namespace SampleForCodebridge.Tests;
 
@@ -18,20 +17,12 @@ public class GetAllDogsQueryTests
 		await context.SaveChangesAsync();
 		
 		var handler = new GetAllDogsQueryHandler(context);
-		
 		var query = new GetAllDogsQuery(null, null);
-		
 		var result = await handler.Handle(query, CancellationToken.None);
-	
 		
-		
-		
-		
-		
-		// Assert.Equal(3, result.Count);
-		// Assert.Contains(result, dog => dog.Name == "Sirko");
-		// Assert.Contains(result, dog => dog.Name == "Reks");
-		// Assert.Contains(result, dog => dog.Name == "Patron");
-		
+		Assert.Equal(3, result.Count);
+		Assert.Contains(result, dog => dog.Name == "Sirko");
+		Assert.Contains(result, dog => dog.Name == "Reks");
+		Assert.Contains(result, dog => dog.Name == "Patron");
 	}
 }
