@@ -22,6 +22,7 @@ public class DogsController : ControllerBase
 		var dogs = await _mediator.Send(new GetAllDogsQuery(attribute, order));
 		
 		var totalItems = dogs.Count;
+		//some errors
 		dogs = dogs.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
 		var result = new
@@ -48,7 +49,7 @@ public class DogsController : ControllerBase
 		}
 	}
 
-	[HttpGet("{id}")]
+	[HttpGet("/dogs/{id}")]
 	public async Task<ActionResult<Dog>> GetDog(int id)
 	{
 		var dog = await _mediator.Send(new SearchDogByIdQuery(id));

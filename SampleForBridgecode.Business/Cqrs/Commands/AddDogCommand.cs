@@ -1,8 +1,10 @@
-﻿using MediatR;
+﻿using System.Runtime.CompilerServices;
+using MediatR;
 using SampleForBridgecode.Business.Validators;
 using SampleForCodebridge.Core.Models;
 using SampleForCodebridge.Data;
 
+[assembly: InternalsVisibleTo("SampleForCodebridge.Tests")]
 namespace SampleForBridgecode.Business.Cqrs.Commands;
 
 public record AddDogCommand(Dog Dog) : IRequest;
@@ -16,6 +18,7 @@ internal class AddDogCommandHandler : IRequestHandler<AddDogCommand>
 		_context = context;
 	}
 
+	
 	public async Task Handle(AddDogCommand request, CancellationToken cancellationToken)
 	{
 		var validator = new DogValidator();

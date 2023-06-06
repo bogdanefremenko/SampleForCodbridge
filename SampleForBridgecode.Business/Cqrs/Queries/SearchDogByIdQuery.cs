@@ -1,8 +1,10 @@
-﻿using MediatR;
+﻿using System.Runtime.CompilerServices;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SampleForCodebridge.Core.Models;
 using SampleForCodebridge.Data;
 
+[assembly: InternalsVisibleTo("SampleForCodebridge.Tests")]
 namespace SampleForBridgecode.Business.Cqrs.Queries;
 
 public record SearchDogByIdQuery(int Id) : IRequest<Dog?>;
